@@ -29,8 +29,8 @@ Este é um sistema de gestão de celulares corporativos desenvolvido em Python c
 1.  Clone o repositório para sua máquina local:
 
     ```
-    git clone <URL_DO_REPOSITORIO>
-    cd <nome_do_repositorio>
+    git clone gustavo-almeidalopes
+    cd MobileManager
     ```
 
 2.  Certifique-se de ter todas as dependências instaladas. Você pode usar o pip para instalar as bibliotecas necessárias:
