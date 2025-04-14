@@ -32,8 +32,8 @@ from database import (
 
 # Configurações de e-mail (substitua pelos seus dados)
 
-EMAIL_SENDER = "gustavo13.roberto@gmail.com"
-EMAIL_PASSWORD = "rS)jFRztXBzF(YQTuRam!Zyk]k$IUT}$S[f)2LtB6Z'Ol5O^tg"
+EMAIL_SENDER=your_gmail@gmail.com
+EMAIL_PASSWORD=your_password
 
 # Configuração de logging para depuração
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
