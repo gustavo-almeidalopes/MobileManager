@@ -1,93 +1,123 @@
-# Gestão de Celulares Corporativos
+# Gerenciador de Aparelhos Corporativos
 
-## Descrição
+Este projeto é um **sistema desktop em Python** que permite o gerenciamento de dispositivos corporativos:
 
-Este é um sistema de gestão de celulares corporativos desenvolvido em Python com Tkinter para a interface gráfica e SQLite para o banco de dados. Ele permite o cadastro, edição, exclusão e pesquisa de informações sobre os celulares da empresa, como usuário, matrícula, status, IMEI, número do chip, serial, observações e termo de responsabilidade.
+* **Celulares**
+* **Notebooks**
+* **Chips SIM**
 
-## Funcionalidades
+A interface gráfica é construída com **PyQt5**, e o **SQLAlchemy** é utilizado para persistência de dados em um banco SQLite local. Há também integração para associação e visualização de termos de uso em formatos **PDF** e **DOCX**.
 
-*   **Cadastro de celulares:** Permite adicionar novos celulares ao sistema, incluindo informações como usuário, matrícula, status (ativo, inativo, manutenção), IMEI 1 e 2, número do chip, serial, observações e caminho para o termo de responsabilidade.
-*   **Edição de celulares:** Permite modificar as informações de um celular já cadastrado.
-*   **Exclusão de celulares:** Permite remover um celular do sistema.
-*   **Pesquisa:** Permite buscar celulares por diversos critérios, como usuário, matrícula, IMEI, número do chip, serial ou status.
-*   **Modo escuro:** Permite alternar entre os modos claro e escuro da interface.
-*   **Abertura do termo de responsabilidade:** Permite abrir o arquivo do termo de responsabilidade associado a um celular, caso ele exista.
+---
+
+## Funcionalidades Atuais
+
+* **Cadastro, Edição e Exclusão** de aparelhos em cada categoria.
+* **Filtros** por status e modelo (celulares e notebooks) ou operadora (chips SIM).
+* **Logs de Ações:** Armazena operações (adicionar, editar, excluir) com timestamp e usuário.
+* **Termos de Uso:** Associação automática de documentos PDF/DOCX a dispositivos conforme o modelo.
+
+---
 
 ## Pré-requisitos
 
-*   Python 3.x
-*   Bibliotecas:
-    *   `tkinter`
-    *   `ttk` (já incluso no tkinter)
-    *   `sqlite3`
-    *   `os`
-    *   `subprocess`
-    *   `docx` (para manipulação de arquivos Word, caso necessário)
+* Python 3.x
+* Bibliotecas principais:
+
+  * `PyQt5`
+  * `sqlalchemy`
+  * `docx` e `PyPDF2`
+
+---
 
 ## Instalação
 
-1.  Clone o repositório para sua máquina local:
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/nome-do-repositorio.git
+cd nome-do-repositorio
 
-    ```
-    git clone gustavo-almeidalopes
-    cd MobileManager
-    ```
+# Crie e ative um ambiente virtual
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-2.  Certifique-se de ter todas as dependências instaladas. Você pode usar o pip para instalar as bibliotecas necessárias:
+# Instale as dependências
+pip install -r requirements.txt
 
-    ```
-    pip install tk docx
-    ```
+# Execute a aplicação
+python main.py
+```
 
-## Execução
+---
 
-1.  **Inicialização:**
+## Estrutura de Pastas
 
-    *   O script `interface.py` é o ponto de entrada.
-    *   Cria uma instância da classe `SistemaCelulares`.
-    *   Define o diretório do banco de dados (`database`).
-    *   Conecta ao banco de dados SQLite (`celulares.db`) usando a função `conectar_db` do arquivo `database.py`.
-    *   Cria a tabela `celulares` no banco de dados, se ela não existir, utilizando a função `criar_tabela` do arquivo `database.py`.
-    *   Inicializa a interface gráfica com Tkinter.
-    *   Define o tema inicial (claro) e cria os elementos da interface (botões, campos de pesquisa, treeview).
-    *   Carrega os dados do banco de dados na treeview.
-    *   Inicia o loop principal do Tkinter para manter a janela aberta e responsiva.
+```text
+├── main.py            # Ponto de entrada da aplicação
+├── celulares.py       # Gestão de Celulares (PyQt5)
+├── notebooks.py       # Gestão de Notebooks (PyQt5)
+├── chips.py           # Gestão de Chips SIM (PyQt5)
+├── database.py        # Modelos SQLAlchemy e setup SQLite
+├── dialogs.py         # Diálogos de formulário para cada dispositivo
+├── term_utils.py      # Utilitários para carregamento de termos PDF/DOCX
+├── requirements.txt   # Lista de dependências
+└── terms/             # Documentos de termos organizados por tipo
+```
 
-2.  **Interface Gráfica:**
+---
 
-    *   A interface é construída usando widgets do Tkinter e ttk (Themed Tkinter).
-    *   Possui uma barra de ferramentas com botões para "Novo", "Editar", "Excluir", "Pesquisar", "Limpar" e "Modo Escuro".
-    *   Utiliza um `Combobox` para filtrar por status ("Ativo", "Inativo", "Manutenção").
-    *   Utiliza um campo de entrada (`Entry`) para pesquisar por texto livre.
-    *   Exibe os dados em uma `Treeview` (tabela) com scrollbar vertical.
-    *   Permite alternar entre os modos claro e escuro, aplicando temas definidos nas classes `DarkTheme` e `LightTheme` do arquivo `tema.py`.
+## Roadmap de Upgrades (Implementação Gradual)
 
-3.  **Interação com o Banco de Dados:**
+1. **Filtros em Todas as Categorias**
 
-    *   As funções para conectar e criar a tabela estão no arquivo `database.py`.
-    *   A classe `SistemaCelulares` contém métodos para:
-        *   `carregar_dados`: Carrega os dados do banco de dados na treeview, aplicando filtros de pesquisa se necessário.
-        *   `novo_celular`: Abre uma janela de formulário para adicionar um novo celular.
-        *   `editar_celular`: Abre uma janela de formulário para editar um celular existente.
-        *   `excluir_celular`: Exclui o celular selecionado do banco de dados.
-        *   `salvar_novo`: Salva os dados de um novo celular no banco de dados.
-        *   `salvar_edicao`: Salva as alterações de um celular existente no banco de dados.
+   * Unificar e refinar lógica de filtragem em celulares, notebooks e chips SIM.
+   * Adicionar filtros adicionais (datas de aquisição, departamento, usuário).
+   * Melhorar performance das consultas para grandes volumes.
 
-4.  **Formulários:**
+2. **Autenticação de Usuário**
 
-    *   As janelas de formulário para adicionar e editar celulares são criadas dinamicamente pelo método `janela_formulario`.
-    *   Os formulários possuem campos de entrada para usuário, matrícula, status, IMEI 1 e 2, número do chip, serial, observações e termo de responsabilidade.
-    *   Utilizam um `Combobox` para o campo de status.
-    *   Permitem selecionar um arquivo para o termo de responsabilidade.
+   * Implementar login com **Google OAuth** e/ou **e‑mail e senha**.
+   * Envio de código de verificação por e‑mail para confirmação de identidade.
+   * Gestão de sessões e níveis de permissão (usuário comum vs. administrador).
 
-5.  **Modo Escuro:**
+3. **Integração com AWS Textract e Bucket S3**
 
-    *   O método `toggle_dark_mode` alterna entre os modos claro e escuro.
-    *   Aplica os temas definidos nas classes `DarkTheme` e `LightTheme` do arquivo `tema.py`.
-    *   Atualiza as cores da treeview e das janelas de formulário.
+   * Criar bucket S3 para armazenamento de documentos carregados.
+   * Chamar API **AWS Textract** para extração de campos (nome, data, assinatura).
+   * Exibir e validar dados extraídos na interface.
 
-6.  **Arquivos Principais:**
+4. **Criação de Front‑end Web**
 
-    *   `interface.py`: Contém a classe `SistemaCelulares`, que define a interface gráfica e a lógica de interação com o banco de dados.
-    *   `database.py`: Contém as funções para conectar ao banco de dados SQLite e criar a tabela `celulares`.
-    *   `tema.py`: Contém as classes `DarkTheme` e `LightTheme` para aplicar os temas claro e escuro à interface.
+   * Desenvolver SPA (React/Vue/Angular) consumindo APIs REST/GraphQL do backend.
+   * Interface responsiva para desktop e mobile.
+   * Dashboards, gráficos de uso e sistema de notificações.
+
+5. **Banco de Dados na AWS (Produção)**
+
+   * Migrar para banco gerenciado (RDS MySQL/PostgreSQL ou DynamoDB).
+   * Infraestrutura escalável e resiliente (Multi-AZ, backups automáticos).
+   * Configurar conexão segura via variáveis de ambiente e roles IAM.
+
+---
+
+## Como Contribuir
+
+1. Faça um *fork* do projeto.
+2. Crie uma branch para sua feature:
+
+   ```bash
+   git checkout -b feature/nome-da-feature
+   ```
+3. Realize suas alterações e commit:
+
+   ```bash
+   git commit -m "Adiciona nova feature"
+   ```
+4. Envie para o repositório remoto:
+
+   ```bash
+   git push origin feature/nome-da-feature
+   ```
+5. Abra um Pull Request no GitHub.
+
+---
